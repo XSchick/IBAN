@@ -28,7 +28,7 @@ public class Iban {
         bankCode = scanner.nextBigInteger();
         System.out.println("Kontonummer: ");
         bankAccountCode = scanner.nextBigInteger();
-        createChecksum(bankCode, bankAccountCode);
+        System.out.println(createChecksum(bankCode, bankAccountCode));
     }
 
     /**
@@ -43,9 +43,13 @@ public class Iban {
         BigInteger c = new BigInteger("98");
         checksum = mergeAllNumbers(mergedNumber, countryCodeNumber).remainder(b = new BigInteger("97"));
         checksum = c.subtract(checksum);
-        String StringChecksum = checksum.toString();
-        StringChecksum = String.format("%02", StringChecksum);
-        checksum = new BigInteger(StringChecksum);
+        //System.out.println(checksum);
+        String StringA = checksum.toString();
+        BigInteger x;
+        if (-1 == (checksum.compareTo(x = new BigInteger("10")))) {
+            StringA = String.format("%02d", checksum.toString());
+        }
+        checksum = new BigInteger(StringA);
         return checksum;
     }
 
@@ -53,7 +57,6 @@ public class Iban {
         String StringMergedNumber = theMergedNumber.toString();
         String StringTheCountryCodeNumber = Integer.toString(theCountryCodeNumber);
         String allNumbers = StringMergedNumber + StringTheCountryCodeNumber;
-
         return new BigInteger(allNumbers);
     }
 
