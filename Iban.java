@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Iban {
     public String countryCode;
-    public int checksum;
+    public BigInteger checksum;
     public BigInteger bankCode;
     public BigInteger bankAccountCode;
     public BigInteger mergedNumber;
@@ -34,13 +34,18 @@ public class Iban {
     /**
      *
      **/
-    public int createChecksum(BigInteger theBankCode, BigInteger theBankAccountCode) {
+    public BigInteger createChecksum(BigInteger theBankCode, BigInteger theBankAccountCode) {
         this.mergedNumber = mergeNumbers(theBankAccountCode, theBankCode);
-        System.out.println(mergedNumber);
+        //System.out.println(mergedNumber);
         int countryCodeNumber = convertCountryCode(countryCode);
-        System.out.println(countryCodeNumber);
-        System.out.println(mergeAllNumbers(mergedNumber, countryCodeNumber));
-
+        //System.out.println(countryCodeNumber);
+        BigInteger b;
+        BigInteger c = new BigInteger("98");
+        checksum = mergeAllNumbers(mergedNumber, countryCodeNumber).remainder(b = new BigInteger("97"));
+        checksum = c.subtract(checksum);
+        String StringChecksum = checksum.toString();
+        StringChecksum = String.format("%02", StringChecksum);
+        checksum = new BigInteger(StringChecksum);
         return checksum;
     }
 
@@ -69,9 +74,9 @@ public class Iban {
         String StringBankCode = theBankCode.toString();
         String StringBankAccountCode = String.format("%010d", theBankAccountCode);
         String StringMergedNumber = StringBankCode + StringBankAccountCode;
-        System.out.println(StringMergedNumber);
+        //System.out.println(StringMergedNumber);
         BigInteger mergedNumber = new BigInteger(StringMergedNumber);
-        System.out.println(mergedNumber);
+        //System.out.println(mergedNumber);
         return mergedNumber;
     }
 
