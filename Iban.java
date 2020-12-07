@@ -17,7 +17,7 @@ public class Iban {
     }
 
     public static void main(String[] args) {
-        Iban iban1 = new Iban("DE", "12345678", "12345");
+        Iban iban1 = new Iban(args[0], args[1],args[2]);
         iban1.createIban();
     }
 
