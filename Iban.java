@@ -1,20 +1,19 @@
-import com.sun.jdi.connect.Connector;
-
 import java.math.BigInteger;
-import java.util.Scanner;
 
+/**
+ * @author xschick
+ * @version 1.2
+ */
 
 public class Iban {
-    public String countryCode;
-    public double bankCode;
-    public double bankAccountCode;
-    public String stringChecksum;
+    int bankCode;
+    int bankAccountCode;
+    String countryCode;
 
     public Iban(String theCountryCode, String theBankCode, String theBankAccountCode) {
         this.countryCode = theCountryCode;
-        this.bankCode = Double.parseDouble(theBankCode);
-        this.bankAccountCode = Double.parseDouble(theBankAccountCode);
-        //createIban();
+        this.bankCode = Integer.parseInt(theBankCode);
+        this.bankAccountCode = Integer.parseInt(theBankAccountCode);
     }
 
     public static void main(String[] args) {
@@ -23,22 +22,23 @@ public class Iban {
     }
 
     public void createIban() {
-        System.out.println(createChecksum(mergeNumbers()));
+        System.out.println((countryCode + createChecksum(mergeNumbers()) + mergeNumbers().toString()).replaceAll("(.{4})", "$1 ").trim());
     }
 
     public String createChecksum(BigInteger theMergedNumber) {
         BigInteger b = new BigInteger("97");
         int checksum = (theMergedNumber.remainder(b)).intValue();
         checksum = 98 - checksum;
-        if (checksum < 10) {
-            stringChecksum = String.format("%02d", checksum);
+        if (checksum == 2) {
+            return String.format("%02d", checksum);
+        } else {
+            return Integer.toString(checksum);
         }
-        return stringChecksum;
     }
 
     public BigInteger mergeNumbers() {
-        String stringBankCode = Double.toString(bankCode);
-        String stringBankAccountCode = String.format("%010f", bankAccountCode);
+        String stringBankCode = Integer.toString(bankCode);
+        String stringBankAccountCode = String.format("%010d", bankAccountCode);
         String stringTheCountryCodeNumber = Integer.toString(convertCountryCode());
         String allNumbers = stringBankCode + stringBankAccountCode + stringTheCountryCodeNumber;
         return new BigInteger(allNumbers);
