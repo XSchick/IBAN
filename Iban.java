@@ -9,6 +9,8 @@ public class Iban {
     public BigInteger bankAccountCode;
     public BigInteger mergedNumber;
     public BigInteger mergedAllNumbers;
+
+
     Scanner scanner = new Scanner(System.in);
 
     public Iban() {
@@ -17,12 +19,8 @@ public class Iban {
 
     public static void main(String[] args) {
         new Iban();
-
     }
 
-    /**
-     * Input Scanner
-     **/
     public void input() {
         System.out.println("Laenderkennung: ");
         countryCode = scanner.nextLine().toUpperCase();
@@ -30,13 +28,9 @@ public class Iban {
         bankCode = scanner.nextBigInteger();
         System.out.println("Kontonummer: ");
         bankAccountCode = scanner.nextBigInteger();
-        //System.out.println(createChecksum(bankCode, bankAccountCode));
         outputIban();
     }
 
-    /**
-     *
-     **/
     public BigInteger createChecksum(BigInteger theBankCode, BigInteger theBankAccountCode) {
         this.mergedNumber = mergeNumbers(theBankAccountCode, theBankCode);
         int countryCodeNumber = convertCountryCode(countryCode);
@@ -61,32 +55,23 @@ public class Iban {
     }
 
     public int convertCountryCode(String theCountryCode) {
-        int firstLetterCode = theCountryCode.charAt(0);
-        firstLetterCode = firstLetterCode - 64;
-        int firstletterNumber = firstLetterCode + 9;
-        int secondLetterCode = theCountryCode.charAt(1);
-        secondLetterCode = secondLetterCode - 64;
-        int secondletterNumber = secondLetterCode + 9;
-        return Integer.parseInt(Integer.toString(firstletterNumber) + Integer.toString(secondletterNumber) + "00");
+        int firstLetterCode = theCountryCode.charAt(0) - 55;
+        int secondLetterCode = theCountryCode.charAt(1) - 55;
+        return Integer.parseInt(Integer.toString(firstLetterCode) + Integer.toString(secondLetterCode) + "00");
     }
 
-    /**
-     * This method first converts the bank code from BigInteger to String
-     **/
     public BigInteger mergeNumbers(BigInteger theBankAccountCode, BigInteger theBankCode) {
         String StringBankCode = theBankCode.toString();
         String StringBankAccountCode = String.format("%010d", theBankAccountCode);
         String StringMergedNumber = StringBankCode + StringBankAccountCode;
-        //System.out.println(StringMergedNumber);
         BigInteger mergedNumber = new BigInteger(StringMergedNumber);
-        //System.out.println(mergedNumber);
         return mergedNumber;
     }
 
 
     public void outputIban() {
-    String StringMergedAllNumbers = createChecksum(bankCode, bankAccountCode).toString();
-    String StringChecksum = checksum.toString();
+        String StringMergedAllNumbers = createChecksum(bankCode, bankAccountCode).toString();
+        String StringChecksum = checksum.toString();
         System.out.println("IBAN: " + countryCode + checksum + mergedNumber);
     }
 }
