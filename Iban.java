@@ -22,7 +22,7 @@ public class Iban {
     }
 
     public void createIban() {
-        System.out.println(((countryCode + createChecksum(mergeNumbers()) + mergeNumbers().toString()).replaceAll("(.{4})", "$1 ").trim()).substring(0, 32));
+        System.out.println(((countryCode + createChecksum(mergeNumbers()) + mergeNumbers().toString()).replaceAll("(.{4})", "$1 ").trim()).substring(0, 27));
     }
 
     public String createChecksum(BigInteger theMergedNumber) {
