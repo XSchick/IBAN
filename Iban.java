@@ -6,6 +6,7 @@ import java.math.BigInteger;
  */
 
 public class Iban {
+    int diesisteintest = 0;
     int bankCode;
     int bankAccountCode;
     String countryCode;
